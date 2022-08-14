@@ -26,5 +26,5 @@ Outputs:
     Value: !GetAtt WebsiteS3Bucket.WebsiteURL
     Description: URL for website hosted on S3
   S3BucketSecureURL:
-    Value: !Sub 'https://${S3Bucket.DomainName}'
+    Value: !Sub 'https://${WebsiteS3Bucket.DomainName}'
     Description: https URL for the website hosted on S3
