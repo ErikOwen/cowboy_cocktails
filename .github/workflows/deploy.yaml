@@ -1,4 +1,4 @@
-ame: Deploy CloudFormation Stacks and upload artifacts
+name: Deploy CloudFormation Stacks and upload artifacts
 
 # Controls when the action will run.
 on:
