@@ -28,4 +28,4 @@ jobs:
           no-fail-on-empty-changeset: "1"
       - name: Upload website contents
         id: upload-website-contents
-        run: aws s3 sync --delete --exclude "*" --exclude "^\." --include "index.html"  --include "assets" --include "images" ./ s3://cowboycocktails3.com
+        run: aws s3 sync --delete --exclude "*" --exclude "^\." --include "index.html"  --include "assets/*" --include "images/*" --include "scripts/*" ./ s3://cowboycocktails3.com
