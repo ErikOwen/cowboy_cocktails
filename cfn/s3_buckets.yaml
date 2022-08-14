@@ -1,0 +1,30 @@
+AWSTemplateFormatVersion: 2010-09-09
+Resources:
+  WebsiteS3Bucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: cowboycocktails3.com
+      AccessControl: PublicRead
+      WebsiteConfiguration:
+        IndexDocument: index.html
+        ErrorDocument: error.html
+  WebsiteS3BucketPolicy:
+    Type: 'AWS::S3::BucketPolicy'
+    Properties:
+      PolicyDocument:
+        Id: WebsiteS3BucketPolicy
+        Version: 2012-10-17
+        Statement:
+          - Sid: PublicReadForGetBucketObjects
+            Effect: Allow
+            Principal: '*'
+            Action: 's3:GetObject'
+            Resource: !Sub "arn:aws:s3:::${WebsiteS3Bucket}/*"
+      Bucket: !Ref WebsiteS3Bucket
+Outputs:
+  WebsiteURL:
+    Value: !GetAtt WebsiteS3Bucket.WebsiteURL
+    Description: URL for website hosted on S3
+  S3BucketSecureURL:
+    Value: !Sub 'https://${S3Bucket.DomainName}'
+    Description: https URL for the website hosted on S3
