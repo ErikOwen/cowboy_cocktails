@@ -29,3 +29,11 @@ jobs:
           name:  cowboy-cocktails-s3-stack
           template: cfn/s3_buckets.yaml
           no-fail-on-empty-changeset: "1"
+      - name: Upload website contents
+        id: upload-website-contents
+        run: aws s3 sync . \
+          --exclude "*" \
+          --include "index.html" \
+          --include "assets"
+          --include "images"
+          s3://cowboycocktails3.com
