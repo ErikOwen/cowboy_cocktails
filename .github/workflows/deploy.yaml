@@ -9,9 +9,6 @@ on:
 jobs:
   cfn-deployment:
     runs-on: ubuntu-20.04
-    defaults:
-      run:
-        working-directory: templates
     steps:
       - name: Checkout
         uses: actions/checkout@v2
