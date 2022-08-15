@@ -6,6 +6,10 @@ on:
     branches:
       - main
 
+env:
+  WEB_CLIENT_STACK_NAME: cowboy-cocktails-s3-stack
+  AWS_REGION: us-west-2
+
 jobs:
   cfn-deployment:
     runs-on: ubuntu-20.04
@@ -18,14 +22,18 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-west-2
+          aws-region: $AWS_REGION
       - name: Deploy web client CFN stack
         id: deploy-s3-stack
         uses: aws-actions/aws-cloudformation-github-deploy@v1.0.3
         with:
-          name:  cowboy-cocktails-s3-stack
+          name: $WEB_CLIENT_STACK_NAME
           template: cfn/web_client.yaml
           no-fail-on-empty-changeset: "1"
       - name: Upload website contents
         id: upload-website-contents
         run: aws s3 sync --delete --exclude "*" --exclude "^\." --include "index.html" --include "404.html"  --include "assets/*" --include "images/*" --include "scripts/*" ./ s3://cowboycocktails3.com
+      - name: Get CloudFront distribution ID
+        run: echo "CLOUDFRONT_ID=$(aws cloudformation describe-stacks --region $AWS_REGION --stack-name $WEB_CLIENT_STACK_NAME --query "Stacks[0].Outputs[0].OutputValue")" >> $GITHUB_ENV
+      - name: Create CloudFront invalidation
+        run: aws cloudfront create-invalidation --region $AWS_REGION --distribution-id $CLOUDFRONT_ID
