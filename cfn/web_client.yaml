@@ -48,7 +48,7 @@ Resources:
         # - "*.cowboycocktails3.com"
         DefaultCacheBehavior:
           TargetOriginId: S3WebsiteOrigin
-          CachePolicyId: "cowboy-cocktails-cache-policy"
+          # CachePolicyId: "cowboy-cocktails-cache-policy"
           AllowedMethods:
             - GET
             - HEAD
@@ -56,10 +56,10 @@ Resources:
           # TargetOriginId: S3WebsiteOrigin
           ViewerProtocolPolicy: redirect-to-https
           # SmoothStreaming: 'false'
-          # ForwardedValues:
-          #   QueryString: 'false'
-          #   Cookies:
-          #     Forward: all
+          ForwardedValues:
+            QueryString: 'false'
+            Cookies:
+              Forward: all
           # TrustedSigners:
           # - 1234567890EX
           # - 1234567891EX
