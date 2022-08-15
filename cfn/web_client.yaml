@@ -56,7 +56,7 @@ Resources:
           ErrorCachingMinTTL: '30'
         PriceClass: PriceClass_200
         ViewerCertificate:
-          AcmCertificateArn: arn:aws:acm:us-west-2:537748127473:certificate/9bb7601d-9992-4e74-b95d-aaec6f29daa4
+          AcmCertificateArn: arn:aws:acm:us-east-1:537748127473:certificate/6d2fc569-a6a1-43f6-a9fd-588872fed017
           SslSupportMethod: sni-only
           MinimumProtocolVersion: TLSv1
 
