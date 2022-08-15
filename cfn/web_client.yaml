@@ -26,14 +26,6 @@ Resources:
     Type: AWS::CloudFront::Distribution
     Properties:
       DistributionConfig:
-        # CacheBehavior:
-        #   CachePolicyId: "cowboy-cocktails-cache-policy"
-        #   AllowedMethods:
-        #     - GET
-        #     - HEAD
-        #     - OPTIONS
-        #   TargetOriginId: S3WebsiteOrigin
-        #   ViewerProtocolPolicy: redirect-to-https
         Origins:
         - DomainName: !Sub "${WebsiteS3Bucket}.s3-website.${AWS::Region}.amazonaws.com"
           Id: S3WebsiteOrigin
@@ -48,34 +40,21 @@ Resources:
         # - "*.cowboycocktails3.com"
         DefaultCacheBehavior:
           TargetOriginId: S3WebsiteOrigin
-          # CachePolicyId: "cowboy-cocktails-cache-policy"
           AllowedMethods:
             - GET
             - HEAD
             - OPTIONS
-          # TargetOriginId: S3WebsiteOrigin
           ViewerProtocolPolicy: redirect-to-https
-          # SmoothStreaming: 'false'
           ForwardedValues:
             QueryString: 'false'
             Cookies:
               Forward: all
-          # TrustedSigners:
-          # - 1234567890EX
-          # - 1234567891EX
-          # ViewerProtocolPolicy: allow-all
         CustomErrorResponses:
         - ErrorCode: '404'
           ResponsePagePath: "/404.html"
           ResponseCode: '404'
           ErrorCachingMinTTL: '30'
         PriceClass: PriceClass_200
-        # Restrictions:
-        #   GeoRestriction:
-        #     RestrictionType: whitelist
-        #     Locations:
-        #     - AQ
-        #     - CV
         ViewerCertificate:
           CloudFrontDefaultCertificate: 'true'
 
