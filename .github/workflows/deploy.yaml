@@ -36,4 +36,4 @@ jobs:
       - name: Get CloudFront distribution ID
         run: echo "CLOUDFRONT_ID=$(aws cloudformation describe-stacks --region ${{ env.AWS_REGION }} --stack-name ${{ env.WEB_CLIENT_STACK_NAME }} --query "Stacks[0].Outputs[0].OutputValue")" >> $GITHUB_ENV
       - name: Create CloudFront invalidation
-        run: aws cloudfront create-invalidation --region ${{ env.AWS_REGION }} --distribution-id ${{ env.CLOUDFRONT_ID }}
+        run: aws cloudfront create-invalidation --region ${{ env.AWS_REGION }} --distribution-id ${{ env.CLOUDFRONT_ID }} --paths "/*"
