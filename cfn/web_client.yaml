@@ -27,7 +27,7 @@ Resources:
     Properties:
       DistributionConfig:
         Origins:
-        - DomainName: !GetAtt WebsiteS3Bucket.WebsiteURL
+        - DomainName: !Sub "${WebsiteS3Bucket}.s3-website.${AWS::Region}.amazonaws.com"
           Id: S3WebsiteOrigin
           CustomOriginConfig:
             HTTPPort: '80'
