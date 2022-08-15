@@ -35,9 +35,9 @@ Resources:
         Enabled: 'true'
         Comment: cowboycocktails3.com
         DefaultRootObject: index.html
-        # Aliases:
-        # - cowboycocktails3.com
-        # - "*.cowboycocktails3.com"
+        Aliases:
+        - cowboycocktails3.com
+        - www.cowboycocktails3.com
         DefaultCacheBehavior:
           TargetOriginId: S3WebsiteOrigin
           AllowedMethods:
@@ -56,7 +56,9 @@ Resources:
           ErrorCachingMinTTL: '30'
         PriceClass: PriceClass_200
         ViewerCertificate:
-          CloudFrontDefaultCertificate: 'true'
+          AcmCertificateArn: arn:aws:acm:us-west-2:537748127473:certificate/9bb7601d-9992-4e74-b95d-aaec6f29daa4
+          SslSupportMethod: sni-only
+          MinimumProtocolVersion: TLSv1
 
 Outputs:
   WebsiteURL:
