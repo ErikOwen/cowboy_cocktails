@@ -25,7 +25,7 @@ def wakeup(event):
 
 
 @lambda_handler.handle("post", path="/message" )
-def post_preference(event, user_id, preference_id): 
+def post_message(event, user_id, preference_id): 
     return Response( 
         body={"status": "message sent"}, 
         status_code=200, 
@@ -38,7 +38,7 @@ def post_preference(event, user_id, preference_id):
 ######################################### 
 
 NOT_FOUND_RESPONSE = Response( 
-    body={"error_message": "endpoint not found"}, 
+    body={"error_message": "not found"}, 
     status_code=404, 
     headers={"Content-Type": "application/json"}, 
 ) 
