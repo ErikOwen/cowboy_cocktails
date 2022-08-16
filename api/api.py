@@ -15,7 +15,7 @@ def wakeup(event):
     return Response( 
         body="I'm warm", 
         status_code=200, 
-        headers={"Content-Type": "application/json"}, 
+        headers={"Content-Type": "application/json", "Access-Control-Allow-Origin": "*"}, 
     )
 
 
@@ -25,11 +25,12 @@ def wakeup(event):
 
 
 @lambda_handler.handle("post", path="/message" )
-def post_message(event): 
+def post_message(event):
+    print(event)
     return Response( 
         body={"status": "message sent"}, 
         status_code=200, 
-        headers={"Content-Type": "application/json"}, 
+        headers={"Content-Type": "application/json", "Access-Control-Allow-Origin": "*"}, 
     )
 
 
