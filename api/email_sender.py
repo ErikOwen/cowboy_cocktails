@@ -2,7 +2,7 @@ import os
 import boto3
 from botocore.exceptions import ClientError
 
-SENDER = "Web Mailer <no-reply@cowboycocktails3.com>"
+SENDER = "Cowboy Cocktails Web Mailer <no-reply@cowboycocktails3.com>"
 RECIPIENT = os.environ["EMAIL_RECIPIENT"]
 AWS_REGION = os.environ.get("AWS_REGION", "us-west-2")
 SUBJECT = "Cowboy Cocktails Inquiry from {name}"
@@ -27,7 +27,7 @@ BODY_HTML = """
 
 def send_email(name, email, message):
     client = boto3.client('ses',region_name=AWS_REGION)
-    response = client.send_email(
+    client.send_email(
         Destination={
             'ToAddresses': [
                 RECIPIENT,

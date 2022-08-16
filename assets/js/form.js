@@ -33,9 +33,12 @@ $(document).ready(function() {
                     'Content-Type': 'application/json',
                 }
             }
-        ).then(response => response.json())
-        .then(data => {
-            $("#form-submit").val("Message Sent!");
+        ).then(response => {
+            if(response.status == 200) {
+                $("#form-submit").val("Message Sent!");
+            } else {
+                $("#form-submit").val("Error");
+            }
         })
         .catch((err) => {
             $("#form-submit").val("Error");
