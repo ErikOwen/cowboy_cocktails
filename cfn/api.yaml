@@ -62,12 +62,12 @@ Resources:
       StageName: !Ref StageName 
       Name: !Sub ${ServiceName}-api 
       EndpointConfiguration: REGIONAL 
+      Domain:
+        DomainName: api.cowboycocktails3.com
+        CertificateArn: arn:aws:acm:us-west-2:537748127473:certificate/261c5d08-1fc0-4526-9974-de81b68c7373
       AccessLogSetting: 
         DestinationArn: !GetAtt APIGWLogGroup.Arn 
         Format: '{"requestId":"$context.requestId", "path":"$context.path", "apiStage":"$context.stage", "sourceIp":"$context.identity.sourceIp", "requestTime":"$context.requestTime", "httpMethod":"$context.httpMethod", "resourcePath": "$context.resourcePath", "status": "$context.status", "backendResponseTime":"$context.integrationLatency", "responseTime":"$context.responseLatency", "responseLength":"$context.responseLength"}' 
-      # Auth: 
-      #   DefaultAuthorizer: AWS_IAM 
-      #   InvokeRole: NONE  
 
   ApiFuncRole: 
     Type: AWS::IAM::Role 
