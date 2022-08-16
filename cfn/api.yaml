@@ -65,9 +65,9 @@ Resources:
       AccessLogSetting: 
         DestinationArn: !GetAtt APIGWLogGroup.Arn 
         Format: '{"requestId":"$context.requestId", "path":"$context.path", "apiStage":"$context.stage", "sourceIp":"$context.identity.sourceIp", "requestTime":"$context.requestTime", "httpMethod":"$context.httpMethod", "resourcePath": "$context.resourcePath", "status": "$context.status", "backendResponseTime":"$context.integrationLatency", "responseTime":"$context.responseLatency", "responseLength":"$context.responseLength"}' 
-      Auth: 
-        DefaultAuthorizer: AWS_IAM 
-        InvokeRole: NONE  
+      # Auth: 
+      #   DefaultAuthorizer: AWS_IAM 
+      #   InvokeRole: NONE  
 
   ApiFuncRole: 
     Type: AWS::IAM::Role 
