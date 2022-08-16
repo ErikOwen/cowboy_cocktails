@@ -1,0 +1,109 @@
+AWSTemplateFormatVersion: 2010-09-09 
+Transform: AWS::Serverless-2016-10-31 
+
+Description: API for cowboycocktails3.com
+Parameters:
+  S3Bucket:
+    Description: S3 bucket of the lambda artifact
+    Type: String
+  S3Key:
+    Description: S3 object key of the lambda artifact
+    Type: String
+  ServiceName: 
+    Description: the name of the service 
+    Type: String
+    Default: cowboy-cocktails
+  StageName: 
+    Description: Prefix of API Gateway path 
+    Type: String 
+    Default: v1 
+
+Resources: 
+  ApiLambda: 
+    Type: AWS::Serverless::Function 
+    Properties: 
+      FunctionName: !Sub ${ServiceName}-api 
+      CodeUri: 
+        Bucket: !Ref S3Bucket 
+        Key: !Sub ${S3Key}/main.zip 
+      Handler: api.lambda_handler 
+      Runtime: python3.9 
+      MemorySize: 512 
+      Timeout: 60 
+      # Environment: 
+      #   Variables: 
+      #     ENVIRONMENT: 'prod'
+      Role: !GetAtt ApiFuncRole.Arn 
+      Events: 
+        RequestProxy: 
+          Type: Api 
+          Properties: 
+            Path: /{proxy+} 
+            Method: ANY 
+            RestApiId: !Ref Api 
+
+  APIGWPermission: 
+    Type: AWS::Lambda::Permission 
+    Properties: 
+      Action: lambda:InvokeFunction 
+      FunctionName: !Ref ApiLambda 
+      Principal: apigateway.amazonaws.com 
+      SourceArn: !Sub arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${Api}/*/*/* 
+
+  APIGWLogGroup: 
+    Type: AWS::Logs::LogGroup 
+    Properties: 
+      LogGroupName: !Sub "/aws/apigateway/${ServiceName}-api" 
+      RetentionInDays: 365
+
+  Api: 
+    Type: AWS::Serverless::Api  
+    Properties: 
+      StageName: !Ref StageName 
+      Name: !Sub ${ServiceName}-api 
+      EndpointConfiguration: REGIONAL 
+      AccessLogSetting: 
+        DestinationArn: !GetAtt APIGWLogGroup.Arn 
+        Format: '{"requestId":"$context.requestId", "path":"$context.path", "apiStage":"$context.stage", "sourceIp":"$context.identity.sourceIp", "requestTime":"$context.requestTime", "httpMethod":"$context.httpMethod", "resourcePath": "$context.resourcePath", "status": "$context.status", "backendResponseTime":"$context.integrationLatency", "responseTime":"$context.responseLatency", "responseLength":"$context.responseLength"}' 
+      Auth: 
+        DefaultAuthorizer: AWS_IAM 
+        InvokeRole: NONE  
+
+  ApiFuncRole: 
+    Type: AWS::IAM::Role 
+    Properties: 
+      RoleName: !Sub ${ServiceName}-api-router-role 
+      Description: !Sub "Role used by the API Lambda function in the ${ServiceName} environment" 
+      AssumeRolePolicyDocument: 
+        Version: "2012-10-17"
+        Statement: 
+          - Effect: Allow 
+            Principal: 
+            Service: lambda.amazonaws.com 
+            Action: 
+              - 'sts:AssumeRole' 
+      ManagedPolicyArns: 
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+      Policies: 
+        - PolicyName: !Sub "${ServiceName}-execution-policy" 
+          PolicyDocument: 
+            Version: "2012-10-17" 
+            Statement: 
+              - Effect: Allow 
+                Action: 
+                  - dynamodb:BatchGetItem 
+                  - dynamodb:BatchWriteItem 
+                  - dynamodb:ConditionCheckItem 
+                  - dynamodb:PutItem 
+                  - dynamodb:DescribeTable 
+                  - dynamodb:DeleteItem 
+                  - dynamodb:GetItem 
+                  - dynamodb:Scan 
+                  - dynamodb:Query 
+                  - dynamodb:UpdateItem 
+                Resource: "*"
+
+Outputs: 
+  APIGwBaseUrl: 
+    Description: "API Gateway Base URL" 
+    Value: !Sub "https://${Api}.execute-api.${AWS::Region}.amazonaws.com/${StageName}/" 

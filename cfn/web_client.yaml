@@ -1,4 +1,7 @@
 AWSTemplateFormatVersion: 2010-09-09
+Parameters:
+  ApiArtifactBucketName:
+    Type: String
 Resources:
   WebsiteS3Bucket:
     Type: AWS::S3::Bucket
@@ -59,6 +62,11 @@ Resources:
           AcmCertificateArn: arn:aws:acm:us-east-1:537748127473:certificate/6d2fc569-a6a1-43f6-a9fd-588872fed017
           SslSupportMethod: sni-only
           MinimumProtocolVersion: TLSv1
+
+  ApiArtifactsS3Bucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Ref ApiArtifactBucketName
 
 Outputs:
   CloudFrontId:
