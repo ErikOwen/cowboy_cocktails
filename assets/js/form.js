@@ -40,27 +40,6 @@ $(document).ready(function() {
         .catch((err) => {
             $("#form-submit").val("Error");
         });
-
-		// var settings = {
-		// 	"async": true,
-		// 	"crossDomain": true,
-		// 	"url": "https://0r1iymyyel.execute-api.us-west-2.amazonaws.com/v1/contact",
-		// 	"method": "POST",
-		// 	"headers": {
-		// 		"content-type": "application/json"
-		// 	},
-		// 	"processData": false,
-		// 	"data": JSON.stringify({"name": name, "email": email, "message": body})
-		// }
-
-		// $.ajax(settings).done(function (response) {
-		// 	if(response.emailSent == true) {
-		// 		$('#submit_button').text("Sent ✓");
-		// 	}
-		// 	else {
-		// 		$('#submit_button').css('color', 'red').css('border-color', 'red').text("Sending Failed ✘");
-		// 	}
-		// });
 	});
 
     $('#form-reset').click(function(e) {
@@ -71,4 +50,16 @@ $(document).ready(function() {
 		$('#message').val("");
         $("#form-submit").val("Send Message");
 	});
+
+    $("#name").focus(function() {
+        fetch("https://api.cowboycocktails3.com/warmup", 
+            {
+                method: "GET", 
+                mode: 'cors',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            }
+        ).then(response => response.json())
+    });
 });

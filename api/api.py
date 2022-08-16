@@ -24,7 +24,7 @@ def wakeup_options(event):
 def wakeup_get(event): 
     """ warms up the lambda function """ 
     return Response( 
-        body="I'm warm", 
+        body={"status": "lambda is warm"}, 
         status_code=200, 
         headers=DEFAULT_HEADERS, 
     )
