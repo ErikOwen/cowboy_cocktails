@@ -16,7 +16,10 @@ Parameters:
   StageName: 
     Description: Prefix of API Gateway path 
     Type: String 
-    Default: v1 
+    Default: v1
+  EmailRecipient:
+    Description: Email address that will receive web form submissions
+    Type: String
 
 Resources: 
   ApiLambda: 
@@ -30,9 +33,10 @@ Resources:
       Runtime: python3.9 
       MemorySize: 512 
       Timeout: 60 
-      # Environment: 
-      #   Variables: 
-      #     ENVIRONMENT: 'prod'
+      Environment: 
+        Variables: 
+          AWS_REGION: !Ref AWS::Region
+          EMAIL_RECIPIENT: !Ref EmailRecipient
       Role: !GetAtt ApiFuncRole.Arn 
       Events: 
         RequestProxy: 
@@ -91,16 +95,8 @@ Resources:
             Statement: 
               - Effect: Allow 
                 Action: 
-                  - dynamodb:BatchGetItem 
-                  - dynamodb:BatchWriteItem 
-                  - dynamodb:ConditionCheckItem 
-                  - dynamodb:PutItem 
-                  - dynamodb:DescribeTable 
-                  - dynamodb:DeleteItem 
-                  - dynamodb:GetItem 
-                  - dynamodb:Scan 
-                  - dynamodb:Query 
-                  - dynamodb:UpdateItem 
+                  - ses:SendEmail
+                  - ses:SendRawEmail
                 Resource: "*"
 
 Outputs: 

@@ -14,7 +14,8 @@ python3 -m venv venv
 source venv/bin/activate
 
 echo 'adding artifacts to build directory'
-cp api.py build
+cp api.py build/
+cp email_sender.py build/
 pip3 install -t build -r requirements.txt
 
 echo 'zipping artifact'

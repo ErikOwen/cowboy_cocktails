@@ -1,6 +1,7 @@
 import json 
 import traceback 
-from lambdarest import lambda_handler, Response 
+from lambdarest import lambda_handler, Response
+from email_sender import send_email
 
 DEFAULT_HEADERS = {
     "Content-Type": "application/json",
@@ -44,11 +45,29 @@ def message_options(event):
 @lambda_handler.handle("post", path="/message" )
 def message_post(event):
     print(event)
-    return Response( 
-        body={"status": "message sent"}, 
-        status_code=200, 
-        headers=DEFAULT_HEADERS, 
-    )
+    name = event.get("json", {}).get("body", {}).get("name")
+    email = event.get("json", {}).get("body", {}).get("email")
+    message = event.get("json", {}).get("body", {}).get("message")
+    if not name or not email or not message:
+        return Response(
+            body={"client error": "'name', 'email' and 'message' fields are required"},
+            status_code=400,
+            headers=DEFAULT_HEADERS,
+        )
+    try:
+        send_email(name, email, message)
+        return Response(
+            body={"status": "message sent"},
+            status_code=200,
+            headers=DEFAULT_HEADERS,
+        )
+    except Exception as exc:
+        print(exc)
+        return Response(
+            body={"status": "internal server error"},
+            status_code=500,
+            headers=DEFAULT_HEADERS,
+        )
 
 
 ######################################### 
