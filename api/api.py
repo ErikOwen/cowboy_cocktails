@@ -73,3 +73,7 @@ def not_found_patch_handler(event):
 @lambda_handler.handle("delete", path="/<path:path>") 
 def not_found_delete_handler(event): 
     return NOT_FOUND_RESPONSE 
+
+@lambda_handler.handle("options", path="/<path:path>") 
+def not_found_delete_handler(event): 
+    return NOT_FOUND_RESPONSE 
