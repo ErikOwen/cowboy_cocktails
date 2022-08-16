@@ -13,9 +13,15 @@ DEFAULT_HEADERS = {
 ############# Ping Route ################ 
 ######################################### 
 
+@lambda_handler.handle("options", path="/warmup") 
+def wakeup_options(event): 
+    return Response(
+        status_code=200, 
+        headers=DEFAULT_HEADERS, 
+    ) 
 
 @lambda_handler.handle("get", path="/warmup")  
-def wakeup(event): 
+def wakeup_get(event): 
     """ warms up the lambda function """ 
     return Response( 
         body="I'm warm", 
@@ -28,9 +34,15 @@ def wakeup(event):
 ############ Message Route ############## 
 #########################################  
 
+@lambda_handler.handle("options", path="/message") 
+def message_options(event): 
+    return Response(
+        status_code=200, 
+        headers=DEFAULT_HEADERS, 
+    ) 
 
 @lambda_handler.handle("post", path="/message" )
-def post_message(event):
+def message_post(event):
     print(event)
     return Response( 
         body={"status": "message sent"}, 
@@ -71,9 +83,5 @@ def not_found_patch_handler(event):
 
 
 @lambda_handler.handle("delete", path="/<path:path>") 
-def not_found_delete_handler(event): 
-    return NOT_FOUND_RESPONSE 
-
-@lambda_handler.handle("options", path="/<path:path>") 
 def not_found_delete_handler(event): 
     return NOT_FOUND_RESPONSE 
