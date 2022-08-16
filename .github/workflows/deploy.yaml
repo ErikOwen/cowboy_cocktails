@@ -42,4 +42,4 @@ jobs:
       - name: Building lambda Python3 package
         run: ./api/build.sh
       - name: Get API artifact S3 bucket
-        run: aws s3 cp ./api/build.zip s3://${{ env.API_ARTIFACTS_S3_BUCKET }}/${{ GITHUB_SHA }}/build.zip
+        run: aws s3 cp ./api/build.zip s3://${{ env.API_ARTIFACTS_S3_BUCKET }}/${{ github.sha }}/build.zip
