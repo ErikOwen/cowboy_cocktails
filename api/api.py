@@ -13,7 +13,7 @@ from lambdarest import lambda_handler, Response
 def wakeup(event): 
     """ warms up the lambda function """ 
     return Response( 
-        body={"status": "alive"}, 
+        body="pong", 
         status_code=200, 
         headers={"Content-Type": "application/json"}, 
     )

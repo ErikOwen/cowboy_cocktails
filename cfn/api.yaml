@@ -25,7 +25,7 @@ Resources:
       FunctionName: !Sub ${ServiceName}-api 
       CodeUri: 
         Bucket: !Ref S3Bucket 
-        Key: !Red S3Key
+        Key: !Ref S3Key
       Handler: api.lambda_handler 
       Runtime: python3.9 
       MemorySize: 512 
