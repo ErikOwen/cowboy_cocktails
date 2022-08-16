@@ -20,6 +20,6 @@ pip3 install -t build -r requirements.txt
 echo 'zipping artifact'
 pushd build
 zip -r ../build.zip .
-popd build
+popd
 
-popd $SCRIPT_DIR
+popd
