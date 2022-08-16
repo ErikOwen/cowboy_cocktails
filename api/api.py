@@ -5,15 +5,15 @@ from lambdarest import lambda_handler, Response
 
 
 ######################################### 
-############# Ping Route ############### 
+############# Ping Route ################ 
 ######################################### 
 
 
-@lambda_handler.handle("get", path="/ping")  
+@lambda_handler.handle("get", path="/warmup")  
 def wakeup(event): 
     """ warms up the lambda function """ 
     return Response( 
-        body="pong", 
+        body="I'm warm", 
         status_code=200, 
         headers={"Content-Type": "application/json"}, 
     )
@@ -25,7 +25,7 @@ def wakeup(event):
 
 
 @lambda_handler.handle("post", path="/message" )
-def post_message(event, user_id, preference_id): 
+def post_message(event): 
     return Response( 
         body={"status": "message sent"}, 
         status_code=200, 
