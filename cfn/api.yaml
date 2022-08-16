@@ -34,8 +34,7 @@ Resources:
       MemorySize: 512 
       Timeout: 60 
       Environment: 
-        Variables: 
-          AWS_REGION: !Ref AWS::Region
+        Variables:
           EMAIL_RECIPIENT: !Ref EmailRecipient
       Role: !GetAtt ApiFuncRole.Arn 
       Events: 
