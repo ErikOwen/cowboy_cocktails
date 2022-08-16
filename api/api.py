@@ -2,7 +2,12 @@ import json
 import traceback 
 from lambdarest import lambda_handler, Response 
 
-
+DEFAULT_HEADERS = {
+    "Content-Type": "application/json",
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Method": "GET, POST, OPTIONS, DELETE, PUT",
+    "Access-Control-Allow-Headers": "*"
+}
 
 ######################################### 
 ############# Ping Route ################ 
@@ -15,7 +20,7 @@ def wakeup(event):
     return Response( 
         body="I'm warm", 
         status_code=200, 
-        headers={"Content-Type": "application/json", "Access-Control-Allow-Origin": "*"}, 
+        headers=DEFAULT_HEADERS, 
     )
 
 
@@ -30,7 +35,7 @@ def post_message(event):
     return Response( 
         body={"status": "message sent"}, 
         status_code=200, 
-        headers={"Content-Type": "application/json", "Access-Control-Allow-Origin": "*"}, 
+        headers=DEFAULT_HEADERS, 
     )
 
 
@@ -41,7 +46,7 @@ def post_message(event):
 NOT_FOUND_RESPONSE = Response( 
     body={"error_message": "not found"}, 
     status_code=404, 
-    headers={"Content-Type": "application/json"}, 
+    headers=DEFAULT_HEADERS, 
 ) 
 
 
